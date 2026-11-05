@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T20:54:01.233554+00:00",
+  "title": "Design System: AIAgent",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Deep green ink"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Soft paper"
+      },
+      "green": {
+        "role": "secondary",
+        "displayName": "Practice green"
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Page headline",
+        "purpose": "The main learning prompt; 30px on small screens."
+      },
+      "account-value": {
+        "displayName": "Account value",
+        "purpose": "Cash and equity figures with tabular numerals."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "button-state",
+        "value": "background .16s ease-out, color .16s ease-out",
+        "purpose": "Short button hover transitions."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }",
+        "purpose": "Respect reduced-motion preferences."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "1600px",
+        "query": "min-width: 1600px"
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1200px",
+        "query": "max-width: 1200px"
+      },
+      {
+        "name": "stacked",
+        "value": "900px",
+        "query": "max-width: 900px"
+      },
+      {
+        "name": "mobile",
+        "value": "560px",
+        "query": "max-width: 560px"
+      }
+    ],
+    "focus": {
+      "value": "3px solid var(--green)",
+      "offset": "4px",
+      "purpose": "Visible keyboard focus for buttons, links, and selects."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Advance replay or submit a paper-trade decision.",
+      "html": "<button class=\"ds-primary\">Next candle <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"/></svg></button>",
+      "css": ".ds-primary{font-family:'DM Sans Variable','Segoe UI',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:18px;background:var(--ink);color:var(--white);border:0;border-radius:6px;padding:11px 16px;font-size:12px;cursor:pointer;transition:background .16s ease-out,color .16s ease-out}.ds-primary:hover:not(:disabled){background:var(--green)}.ds-primary:focus-visible{outline:3px solid var(--green);outline-offset:4px}.ds-primary:disabled{opacity:.46;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "A secondary teaching or session action.",
+      "html": "<button class=\"ds-text\">Understand this strategy</button>",
+      "css": ".ds-text{font-family:'DM Sans Variable','Segoe UI',sans-serif;display:inline-flex;padding:4px 0;border:0;background:none;color:var(--green);font-size:11px;text-decoration:underline;text-underline-offset:4px;cursor:pointer;transition:color .16s ease-out}.ds-text:hover{color:var(--ink)}.ds-text:focus-visible{outline:3px solid var(--green);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-text{transition:none}}"
+    },
+    {
+      "name": "Risk Selector",
+      "kind": "input",
+      "refersTo": "risk-select",
+      "description": "Choose the cash percentage allocated to planned risk.",
+      "html": "<label class=\"ds-risk-label\" for=\"ds-risk\">Risk budget <span>% of available cash</span></label><select class=\"ds-risk\" id=\"ds-risk\"><option>0.25% · Cautious</option><option selected>0.5% · Balanced</option><option>1% · Higher risk</option></select>",
+      "css": ".ds-risk-label{font-family:'DM Sans Variable','Segoe UI',sans-serif;display:flex;justify-content:space-between;color:var(--ink);font-size:11px;margin-bottom:8px}.ds-risk-label span{font-size:10px;color:var(--muted)}.ds-risk{font-family:'DM Sans Variable','Segoe UI',sans-serif;width:100%;padding:12px;background:var(--paper);border:1px solid #cbd4c7;border-radius:5px;color:var(--ink);font-size:12px}.ds-risk:focus-visible{outline:3px solid var(--green);outline-offset:4px}"
+    },
+    {
+      "name": "Active Navigation",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "Visible labels identify the current workspace section.",
+      "html": "<nav aria-label=\"Example navigation\"><button class=\"ds-nav\" aria-current=\"page\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" aria-hidden=\"true\"><path d=\"M4 19V5m0 14h16M8 14l4-5 4 3 5-8\"/></svg>Practice</button></nav>",
+      "css": ".ds-nav{font-family:'DM Sans Variable','Segoe UI',sans-serif;width:100%;display:flex;gap:12px;align-items:center;border:0;background:#dde7d6;color:var(--ink);text-align:left;padding:12px;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;transition:background .16s ease-out,color .16s ease-out}.ds-nav:hover{background:#e2e9dd}.ds-nav:focus-visible{outline:3px solid var(--green);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-nav{transition:none}}"
+    },
+    {
+      "name": "Condition Status",
+      "kind": "chip",
+      "refersTo": "status-qualified",
+      "description": "A textual verdict on the teaching setup.",
+      "html": "<span class=\"ds-status\">Conditions met</span>",
+      "css": ".ds-status{font-family:'DM Sans Variable','Segoe UI',sans-serif;display:inline-block;font-size:9px;padding:5px 8px;background:var(--mint);color:var(--green);border-radius:4px;white-space:nowrap}"
+    },
+    {
+      "name": "Analytical Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Flat bordered surface for a coherent learning task.",
+      "html": "<section class=\"ds-panel\"><h2 class=\"ds-panel-title\">Market lab</h2><p class=\"ds-panel-copy\">5-minute candles · IST</p></section>",
+      "css": ".ds-panel{font-family:'DM Sans Variable','Segoe UI',sans-serif;background:var(--white);color:var(--ink);border:1px solid var(--line);border-radius:12px;overflow:hidden;padding:24px}.ds-panel-title{margin:0;font-size:18px;letter-spacing:-.02em;font-weight:600}.ds-panel-copy{margin:8px 0 0;color:var(--muted);font-size:11px}"
+    },
+    {
+      "name": "Selected Stock",
+      "kind": "button",
+      "refersTo": "stock-selected",
+      "description": "Choose a synthetic stock replay; selected state is also programmatic.",
+      "html": "<button class=\"ds-stock\" aria-pressed=\"true\"><strong>RELIANCE</strong><span>₹1,250.00</span></button>",
+      "css": ".ds-stock{font-family:'DM Sans Variable','Segoe UI',sans-serif;display:flex;flex-direction:column;text-align:left;color:var(--ink);border:1px solid #99af8c;background:#f0f5e9;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .16s ease-out,color .16s ease-out}.ds-stock strong{font-size:10px;font-weight:600}.ds-stock span{font-size:12px;font-variant-numeric:tabular-nums;margin-top:3px}.ds-stock:hover:not(:disabled){background:#e7efdf}.ds-stock:focus-visible{outline:3px solid var(--green);outline-offset:4px}.ds-stock:disabled{opacity:.46;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-stock{transition:none}}"
+    }
+  ],
+  "narrative": {
+    "overview": "A light, calm learning workspace places market evidence alongside an explicit risk plan. Compact labels and generous panel separation support deliberate reading; a single dark action button anchors each task.",
+    "keyCharacteristics": [
+      "Paper canvas and flat white analytical panels",
+      "Chart and setup evidence beside a risk ticket",
+      "Persistent synthetic-data disclosure"
+    ],
+    "rules": [
+      {
+        "name": "Flat analytical surfaces",
+        "body": "Use tonal surfaces and single-pixel borders; the implemented interface has no shadows.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep risk and estimated fees close to the order action.",
+      "Do retain visible navigation labels and keyboard focus.",
+      "Do identify synthetic and rule-based teaching examples."
+    ],
+    "donts": [
+      "Don't present synthetic outcomes as live-market accuracy or guaranteed income.",
+      "Don't add urgency or autoplay to the deliberate replay interaction."
+    ]
+  }
+}
