@@ -108,6 +108,25 @@ components:
   panel:
     backgroundColor: "{colors.white}"
     rounded: "{rounded.panel}"
+  coach-field:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body}"
+    rounded: "{rounded.control}"
+    padding: "{spacing.md}"
+    width: "100%"
+  coach-offline:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.ink}"
+    typography: "{typography.button}"
+    rounded: "{rounded.control}"
+    padding: "{spacing.lg}"
+  coach-topic-selected:
+    backgroundColor: "{colors.mint}"
+    textColor: "{colors.ink}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    padding: "9px 10px"
   stock-selected:
     backgroundColor: "{colors.stock-selected}"
     textColor: "{colors.ink}"
@@ -140,6 +159,8 @@ Desktop uses a sticky 222px sidebar and a main container capped at 1500px. The h
 
 At 1200px and below, the sidebar is 185px, content gutters become 24px, and the grid tightens. At 900px and below, the sidebar is a 76px rail with visible compact navigation labels, and the ticket stacks below the chart and conditions. At 560px and below, navigation becomes a horizontal top bar, main gutters become 16px, account metrics use two columns, and secondary condition-result labels disappear. The journal table scrolls horizontally. At 1600px and above, the grid gap grows to 30px and main top padding to 50px.
 
+The coach workspace uses two white panels in a 1:1.6 grid with a 260px minimum evidence column and a 24px gap. It stacks at 1100px; at 560px, panels use 20px 16px padding and a 16px gap. Chat history scrolls within a 650px maximum height. Mobile navigation wraps to accommodate the additional section.
+
 ## Elevation & Depth
 
 There are no shadows. White panels, tinted navigation and status backgrounds, and single-pixel borders create depth. Dividers separate replay controls, sizing, and coaching content without introducing nested elevated cards.
@@ -152,11 +173,14 @@ Panels have 12px corners; primary buttons and stock selectors have 6px corners. 
 
 - **Buttons:** Dark ink primary actions use white text, 11px 16px padding, and a green hover state. Text actions are green and underlined. Disabled buttons use 0.46 opacity and a not-allowed cursor. Color changes take 160ms with ease-out timing; reduced-motion preferences remove transitions and animations.
 - **Fields:** The risk selector uses paper fill, a subtle border, and 12px padding. Buttons, links, and selects share a 3px green focus outline with 4px offset.
-- **Navigation:** Practice, Journal, and Learning guide share icon-and-label controls. The active item has a muted green fill and stronger text. Small layouts retain labels; the journal count is hidden below 900px.
+- **Navigation:** Practice, Journal, Learning guide, and the coach share icon-and-label controls. The active item has a muted green fill and stronger text. Small layouts retain labels; the journal count is hidden below 900px.
 - **Stock selectors and status badges:** Selected stocks use a tinted fill and explicit border, plus `aria-pressed`. Waiting and qualified badges pair distinct colors with text. Stocks other than the open position's symbol are disabled while a position is open.
 - **Panels:** White surfaces with line-colored borders contain the chart, risk plan, journal, and guide. Each panel groups a coherent task; headings and dividers provide internal hierarchy.
 - **Market replay:** Candles and volume bars reveal one step at a time. Stop and target levels appear as labeled dashed lines for an open position. The setup checklist explains trend, breakout, and volume conditions. The risk ticket switches to position details after entry, and the journal supplies a guided empty state before any completed trade.
 - **Feedback:** A polite live region announces actions. Storage problems use an alert. Reset requires a second explicit confirmation and exposes a cancel action.
+
+- **Trading coach:** The evidence desk labels its scanner and practice explanations as deterministic synthetic tools. Topic buttons use paper fill and a line border; the selected topic uses mint fill and a green border with `aria-pressed`. Chat shows a mint disconnected notice until its service is configured. Questions use paper-colored bubbles; answers use plain text with expandable evidence and a conversation log. The log follows new replies only when the reader is near its bottom.
+- **Coach composer:** Password input and textarea use existing paper, ink, field-border, and control-radius tokens with 12px padding. The textarea resizes vertically from a 90px minimum height. Focus uses the existing 3px green outline with a 3px offset; disabled fields use 0.6 opacity and a not-allowed cursor. Fields and submission are disabled while disconnected or requesting a reply. A character count, pending action label, cancel action, and error alert expose request state.
 
 ## Do's and Don'ts
 

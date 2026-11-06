@@ -1,6 +1,6 @@
 # AIAgent — practical intraday trading coach
 
-A working **Next.js / React prototype** for learning NSE cash-equity trading with paper money. All prices are deterministic synthetic examples. Coaching is rule-based; no LLM, live feed, real orders, or measured signal accuracy is included yet.
+A working **Next.js / React prototype** for learning NSE cash-equity trading with paper money. All prices are deterministic synthetic examples. The evidence desk is rule-based. An OpenAI tool-calling coach backend is implemented but requires separate hosting and credentials to activate. No live market feed, real orders, or measured signal accuracy is included.
 
 ## Run
 
@@ -53,3 +53,11 @@ APP_URL=http://127.0.0.1:3000/AIAgent/ npm run test:e2e
 ```
 
 GitHub serves the deployed HTML, CSS, JavaScript, and fonts. No running laptop or Node server is required for the hosted site. GitHub Pages is static hosting and does not supply a private user database. Durable journals, authentication, market-data credentials, and an LLM backend need a separate server-side service. Never put API keys in the static export.
+
+## Interactive coach
+
+Open **Coach** for the setup scanner, risk explanation, and journal review. These practice tools work immediately and are explicitly labeled as calculated guidance. The chat composer is disabled until a backend URL is configured.
+
+The OpenAI agent and secure HTTP gateway are in `server/`. See [backend activation and privacy notes](server/README.md). `render.yaml` prepares a free Render backend; it does not create or activate one. The interface stays on GitHub Pages. The model has read-only tools and cannot trade.
+
+The current site was published from the `gh-pages` branch. The Actions workflow can build and publish future changes now that Pages is enabled; if repository environment restrictions reject a deployment, inspect the run before changing settings.

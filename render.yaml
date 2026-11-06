@@ -1,0 +1,20 @@
+# Optional backend deployment; the frontend stays on GitHub Pages.
+services:
+  - type: web
+    name: aiagent-coach
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm run coach:start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: '24'
+      - key: TRADING_OPENAI_API_KEY
+        sync: false
+      - key: COACH_ACCESS_TOKEN
+        generateValue: true
+      - key: ALLOWED_ORIGIN
+        value: https://mayuresh3102002.github.io
+      - key: COACH_MODEL
+        value: gpt-4.1-mini

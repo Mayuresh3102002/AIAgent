@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-05T20:54:01.233554+00:00",
+  "generatedAt": "2026-11-06T04:21:24.845114+00:00",
   "title": "Design System: AIAgent",
   "extensions": {
     "colorMeta": {
@@ -52,6 +52,11 @@
         "query": "max-width: 1200px"
       },
       {
+        "name": "coach-stacked",
+        "value": "1100px",
+        "query": "max-width: 1100px"
+      },
+      {
         "name": "stacked",
         "value": "900px",
         "query": "max-width: 900px"
@@ -66,6 +71,11 @@
       "value": "3px solid var(--green)",
       "offset": "4px",
       "purpose": "Visible keyboard focus for buttons, links, and selects."
+    },
+    "coachFocus": {
+      "value": "3px solid var(--green)",
+      "offset": "3px",
+      "purpose": "Coach password input, textarea, and evidence disclosure focus."
     }
   },
   "components": [
@@ -124,6 +134,30 @@
       "description": "Choose a synthetic stock replay; selected state is also programmatic.",
       "html": "<button class=\"ds-stock\" aria-pressed=\"true\"><strong>RELIANCE</strong><span>₹1,250.00</span></button>",
       "css": ".ds-stock{font-family:'DM Sans Variable','Segoe UI',sans-serif;display:flex;flex-direction:column;text-align:left;color:var(--ink);border:1px solid #99af8c;background:#f0f5e9;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .16s ease-out,color .16s ease-out}.ds-stock strong{font-size:10px;font-weight:600}.ds-stock span{font-size:12px;font-variant-numeric:tabular-nums;margin-top:3px}.ds-stock:hover:not(:disabled){background:#e7efdf}.ds-stock:focus-visible{outline:3px solid var(--green);outline-offset:4px}.ds-stock:disabled{opacity:.46;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-stock{transition:none}}"
+    },
+    {
+      "name": "Coach Composer Fields",
+      "kind": "input",
+      "refersTo": "coach-field",
+      "description": "Access code and question fields; disabled until the AI service is configured and while a reply is pending.",
+      "html": "<div class=\"ds-coach-fields\"><label for=\"ds-coach-code\">Coach access code <span>Kept in memory only. Never enter an OpenAI API key.</span></label><input id=\"ds-coach-code\" type=\"password\" autocomplete=\"off\" maxlength=\"256\" disabled><label for=\"ds-coach-question\">Your question</label><textarea id=\"ds-coach-question\" rows=\"3\" maxlength=\"2000\" placeholder=\"Help me understand this setup…\" disabled></textarea></div>",
+      "css": ".ds-coach-fields{font-family:'DM Sans Variable','Segoe UI',sans-serif;color:var(--ink);font-size:14px;line-height:1.5}.ds-coach-fields label{display:block;font-size:12px;margin:14px 0 7px}.ds-coach-fields label span{display:block;color:var(--muted);font-size:10px}.ds-coach-fields input,.ds-coach-fields textarea{width:100%;padding:12px;border:1px solid #cbd4c7;background:var(--paper);border-radius:6px;color:var(--ink);font:inherit;caret-color:var(--green)}.ds-coach-fields textarea{resize:vertical;min-height:90px}.ds-coach-fields input:focus-visible,.ds-coach-fields textarea:focus-visible{outline:3px solid var(--green);outline-offset:3px}.ds-coach-fields input:disabled,.ds-coach-fields textarea:disabled{opacity:.6;cursor:not-allowed}"
+    },
+    {
+      "name": "Coach Disconnected Notice",
+      "kind": "custom",
+      "refersTo": "coach-offline",
+      "description": "Distinguishes available deterministic practice tools from disconnected AI chat.",
+      "html": "<div class=\"ds-coach-offline\"><strong>Practice tools are ready. AI chat is not connected yet.</strong><p>Model-generated answers will be available after the secure AI service is activated. You can explore the evidence desk now.</p></div>",
+      "css": ".ds-coach-offline{font-family:'DM Sans Variable','Segoe UI',sans-serif;color:var(--ink);background:var(--mint);padding:16px;font-size:12px;border-radius:6px}.ds-coach-offline p{margin:7px 0 0;color:var(--muted);line-height:1.7}"
+    },
+    {
+      "name": "Coach Topic Button",
+      "kind": "button",
+      "refersTo": "coach-topic-selected",
+      "description": "Select a deterministic practice explanation with a visible and programmatic pressed state.",
+      "html": "<button class=\"ds-coach-topic\" aria-pressed=\"true\">Explain setup</button>",
+      "css": ".ds-coach-topic{font-family:'DM Sans Variable','Segoe UI',sans-serif;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper);font-size:11px;color:var(--ink);cursor:pointer;transition:background .16s ease-out,color .16s ease-out}.ds-coach-topic[aria-pressed=true]{background:var(--mint);border-color:var(--green)}.ds-coach-topic:focus-visible{outline:3px solid var(--green);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-coach-topic{transition:none}}"
     }
   ],
   "narrative": {
