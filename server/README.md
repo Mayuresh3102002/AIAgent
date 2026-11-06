@@ -22,7 +22,7 @@ The Blueprint generates `COACH_ACCESS_TOKEN`. Retrieve it privately from Render'
 After the service is healthy:
 
 1. Set GitHub repository **Settings → Secrets and variables → Actions → Variables → `COACH_API_URL`** to the service's HTTPS origin, without `/coach`.
-2. Run **Deploy to GitHub Pages**, or push to main. The workflow embeds only this non-secret URL.
+2. Run `NEXT_PUBLIC_COACH_API_URL=https://your-service.example bash scripts/publish-pages.sh` from a checkout with Git write access. The workflow validates main; the publishing script builds and pushes to the authorized `gh-pages` branch. Only the non-secret URL is embedded.
 3. Open Coach, enter the access code, and ask about the synthetic session.
 4. Confirm the answer includes tool evidence. Until this has been done with real credentials, live provider integration is unverified.
 

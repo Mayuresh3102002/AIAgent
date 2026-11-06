@@ -41,7 +41,7 @@ See [ROADMAP.md](ROADMAP.md) for licensed data, historical validation, grounded 
 
 ## GitHub Pages hosting
 
-The repository includes `.github/workflows/deploy-pages.yml`. Pushes to `main` run engine tests, build a static export, and deploy it with GitHub Pages. In repository **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source. The expected site address is `https://mayuresh3102002.github.io/AIAgent/`. This address is only live after a successful Pages deployment.
+The repository includes `.github/workflows/deploy-pages.yml`. Pushes to `main` run tests and build a static export. The site publishes from the `gh-pages` branch; the repository environment currently permits that branch only. Run `bash scripts/publish-pages.sh` after validation to publish the current main commit. The expected site address is `https://mayuresh3102002.github.io/AIAgent/`. This address is only live after a successful Pages deployment.
 
 The workflow sets `NEXT_PUBLIC_BASE_PATH=/AIAgent`; assets and the home link use that path. For another project repository, set it to that repository's name. For an owner-level `owner.github.io` repository, leave it empty. To test the exact export locally:
 
@@ -60,4 +60,4 @@ Open **Coach** for the setup scanner, risk explanation, and journal review. Thes
 
 The OpenAI agent and secure HTTP gateway are in `server/`. See [backend activation and privacy notes](server/README.md). `render.yaml` prepares a free Render backend; it does not create or activate one. The interface stays on GitHub Pages. The model has read-only tools and cannot trade.
 
-The current site was published from the `gh-pages` branch. The Actions workflow can build and publish future changes now that Pages is enabled; if repository environment restrictions reject a deployment, inspect the run before changing settings.
+The current site was published from the `gh-pages` branch. The Actions workflow validates main; `scripts/publish-pages.sh` publishes the compiled site to gh-pages without changing repository protection rules.
