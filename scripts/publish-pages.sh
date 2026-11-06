@@ -6,14 +6,14 @@ if [[ -n "$(git status --porcelain)" ]]; then
   printf '%s\n' 'Commit source changes before publishing.' >&2
   exit 1
 fi
-git fetch origin main gh-pages
+git fetch origin refs/heads/main:refs/remotes/origin/main refs/heads/gh-pages:refs/remotes/origin/gh-pages
 source_commit=$(git rev-parse HEAD)
 if [[ "$source_commit" != "$(git rev-parse origin/main)" ]]; then
   printf '%s\n' 'Publish only the current origin/main commit.' >&2
   exit 1
 fi
 npm test
-NEXT_PUBLIC_BASE_PATH=/AIAgent npm run build
+NEXT_TELEMETRY_DISABLED=1 NEXT_PUBLIC_BASE_PATH=/AIAgent npm run build
 touch out/.nojekyll
 printf '%s\n' "$source_commit" > out/build-source.txt
 publish_dir=$(mktemp -d /tmp/aiagent-pages.XXXXXX)
