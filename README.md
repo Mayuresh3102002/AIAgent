@@ -1,6 +1,6 @@
 # AIAgent — practical intraday trading coach
 
-A working **Next.js / React prototype** for learning NSE cash-equity trading with paper money. All prices are deterministic synthetic examples. The evidence desk is rule-based. An OpenAI tool-calling coach backend is implemented but requires separate hosting and credentials to activate. No live market feed, real orders, or measured signal accuracy is included.
+A working **Next.js / React prototype** for learning NSE cash-equity trading with paper money. All prices are deterministic synthetic examples. The evidence desk is rule-based. Guided practice works entirely in the static app, with no AI model, API key, or backend. No live market feed, real orders, or measured signal accuracy is included.
 
 ## Run
 
@@ -29,6 +29,8 @@ With the server running, `npm run test:e2e` exercises the browser flow. It uses 
 4. Reveal candles to simulate stop / target fills, or close manually.
 5. Review the trade journal and learning guide.
 
+For the guided path, open **Coach**, acknowledge the setup and risk checks, write your reasoning, and choose **Save plan & place paper trade**. The plan stays attached to the position after it closes. In **Journal**, record whether you followed the plan, what you learned, and one next action. Saved reflections survive navigation within the current session; unsaved form drafts do not.
+
 The account starts with ₹100,000. One open position is supported, without leverage. The replay is global across the three example stocks. Session state lives only in memory. Reloading, closing the tab, or resetting clears it. No localStorage, sessionStorage, or browser database is used. This is a single-user prototype without authentication or cloud persistence.
 
 ## Simulation assumptions
@@ -37,7 +39,7 @@ Only revealed candles enter analysis. Entry occurs at the displayed close. The s
 
 Fees are a teaching estimate of 0.10% of notional on each side, not an actual Indian brokerage/tax schedule. Spread, slippage, liquidity constraints, and execution latency are not modeled. Synthetic results do not establish live-market profitability or accuracy. No daily income is guaranteed.
 
-See [ROADMAP.md](ROADMAP.md) for licensed data, historical validation, grounded AI coaching, and production requirements. The deterministic trading engine is in `lib/engine.js`; UI and session state are in `app/page.jsx`.
+See [ROADMAP.md](ROADMAP.md) for datasets, historical validation, further guided exercises, and production requirements. The deterministic trading engine is in `lib/engine.js`; UI and session state are in `app/page.jsx`.
 
 ## GitHub Pages hosting
 
@@ -52,12 +54,14 @@ NEXT_PUBLIC_BASE_PATH=/AIAgent npm start
 APP_URL=http://127.0.0.1:3000/AIAgent/ npm run test:e2e
 ```
 
-GitHub serves the deployed HTML, CSS, JavaScript, and fonts. No running laptop or Node server is required for the hosted site. GitHub Pages is static hosting and does not supply a private user database. Durable journals, authentication, market-data credentials, and an LLM backend need a separate server-side service. Never put API keys in the static export.
+GitHub serves the deployed HTML, CSS, JavaScript, and fonts. No running laptop or Node server is required for the hosted site. GitHub Pages is static hosting and does not supply a private user database. This version uses session memory only and requires no external service or credentials.
 
-## Interactive coach
+## Guided coach and reviews
 
-Open **Coach** for the setup scanner, risk explanation, and journal review. These practice tools work immediately and are explicitly labeled as calculated guidance. The chat composer is disabled until a backend URL is configured.
+Open **Coach** for the setup scanner, risk explanation, and plan checklist. Changing the risk budget clears the checklist acknowledgements so the learner can review the new numbers. A qualifying setup, whole-share size, all three checks, and 20–500 characters of reasoning are required for guided entry. Quick entry from Practice remains available and is marked as such in the journal.
 
-The OpenAI agent and secure HTTP gateway are in `server/`. See [backend activation and privacy notes](server/README.md). `render.yaml` prepares a free Render backend; it does not create or activate one. The interface stays on GitHub Pages. The model has read-only tools and cannot trade.
+Each trade has a session identifier. Plans are captured before entry and preserved at exit. Reflections require an answer about following the plan plus a lesson and next action (10–500 characters each). Progress measures completed plans and saved reviews, not trading skill or expected income. Text is learner-authored; it is not analyzed or scored by a model.
 
-The current site was published from the `gh-pages` branch. The Actions workflow validates main; `scripts/publish-pages.sh` publishes the compiled site to gh-pages without changing repository protection rules.
+`lib/learning.js` validates plans and reflections. `lib/coach.js` calculates explanations. No application requests are made to AI providers or external market APIs. The retired backend remains recoverable through Git history, but it is not part of the current app or deployment.
+
+The Actions workflow validates main; `scripts/publish-pages.sh` publishes the compiled site to gh-pages without changing repository protection rules.

@@ -115,18 +115,12 @@ components:
     rounded: "{rounded.control}"
     padding: "{spacing.md}"
     width: "100%"
-  coach-offline:
-    backgroundColor: "{colors.mint}"
-    textColor: "{colors.ink}"
-    typography: "{typography.button}"
-    rounded: "{rounded.control}"
-    padding: "{spacing.lg}"
   coach-topic-selected:
     backgroundColor: "{colors.mint}"
     textColor: "{colors.ink}"
     typography: "{typography.label}"
     rounded: "{rounded.control}"
-    padding: "9px 10px"
+    padding: "10px"
   stock-selected:
     backgroundColor: "{colors.stock-selected}"
     textColor: "{colors.ink}"
@@ -159,7 +153,7 @@ Desktop uses a sticky 222px sidebar and a main container capped at 1500px. The h
 
 At 1200px and below, the sidebar is 185px, content gutters become 24px, and the grid tightens. At 900px and below, the sidebar is a 76px rail with visible compact navigation labels, and the ticket stacks below the chart and conditions. At 560px and below, navigation becomes a horizontal top bar, main gutters become 16px, account metrics use two columns, and secondary condition-result labels disappear. The journal table scrolls horizontally. At 1600px and above, the grid gap grows to 30px and main top padding to 50px.
 
-The coach workspace uses two white panels in a 1:1.6 grid with a 260px minimum evidence column and a 24px gap. It stacks at 1100px; at 560px, panels use 20px 16px padding and a 16px gap. Chat history scrolls within a 650px maximum height. Mobile navigation wraps to accommodate the additional section.
+The coach workspace uses two white panels in a 1:1.5 grid with a 260px minimum evidence column and a 24px gap. It stacks at 1100px; at 560px, panels use 20px 16px padding and a 16px gap. The journal review pairs original reasoning with a reflection form and stacks at 760px. Mobile navigation wraps to accommodate the additional section.
 
 ## Elevation & Depth
 
@@ -177,10 +171,11 @@ Panels have 12px corners; primary buttons and stock selectors have 6px corners. 
 - **Stock selectors and status badges:** Selected stocks use a tinted fill and explicit border, plus `aria-pressed`. Waiting and qualified badges pair distinct colors with text. Stocks other than the open position's symbol are disabled while a position is open.
 - **Panels:** White surfaces with line-colored borders contain the chart, risk plan, journal, and guide. Each panel groups a coherent task; headings and dividers provide internal hierarchy.
 - **Market replay:** Candles and volume bars reveal one step at a time. Stop and target levels appear as labeled dashed lines for an open position. The setup checklist explains trend, breakout, and volume conditions. The risk ticket switches to position details after entry, and the journal supplies a guided empty state before any completed trade.
-- **Feedback:** A polite live region announces actions. Storage problems use an alert. Reset requires a second explicit confirmation and exposes a cancel action.
+- **Feedback:** A polite live region announces actions. Form validation errors use an alert. Reset requires a second explicit confirmation and exposes a cancel action.
 
-- **Trading coach:** The evidence desk labels its scanner and practice explanations as deterministic synthetic tools. Topic buttons use paper fill and a line border; the selected topic uses mint fill and a green border with `aria-pressed`. Chat shows a mint disconnected notice until its service is configured. Questions use paper-colored bubbles; answers use plain text with expandable evidence and a conversation log. The log follows new replies only when the reader is near its bottom.
-- **Coach composer:** Password input and textarea use existing paper, ink, field-border, and control-radius tokens with 12px padding. The textarea resizes vertically from a 90px minimum height. Focus uses the existing 3px green outline with a 3px offset; disabled fields use 0.6 opacity and a not-allowed cursor. Fields and submission are disabled while disconnected or requesting a reply. A character count, pending action label, cancel action, and error alert expose request state.
+- **Trading coach:** The evidence desk uses deterministic calculations. Topic buttons expose selection with `aria-pressed`. The adjacent plan form groups a numbered Plan → Practice → Review sequence, risk figures, three native checkboxes, written reasoning, and an explicit paper-entry action. An open position replaces the entry form with its saved plan and management link.
+- **Learning fields:** Reasoning and reflection textareas use paper fill, a 1px field border, 6px corners, 12px padding, and a 105px minimum height. Labels precede fields; validation feedback is announced with an alert and clears when the input changes. Native checkboxes use the green accent and a visible focus ring.
+- **Journal review:** A summary counts plans and reflections separately from outcomes. The trade table has a 650px minimum width and an explicitly labeled, focusable horizontal scroll region on small screens. Selecting a trade exposes its original reasoning and editable reflection; saved status uses a live region. Written text wraps without truncation.
 
 ## Do's and Don'ts
 

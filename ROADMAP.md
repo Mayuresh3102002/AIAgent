@@ -9,8 +9,8 @@ Select a licensed provider supporting NSE instruments, historical intraday candl
 ## Strategy evaluation
 Separate development and held-out periods by date. Prevent future-bar leakage and survivorship bias. Include slippage, bid/ask spreads, taxes, brokerage, liquidity, and missed fills. Report trade count, win rate, expectancy, profit factor, maximum drawdown, and uncertainty. Compare to simple baselines. Require forward paper-trading evidence before performance claims.
 
-## AI coach
-Ground explanations in verified market features and the learner's journal. Keep position sizing and order constraints deterministic. Distinguish model interpretation from observed facts. Evaluate numerical fidelity, unsupported claims, and behavior when data is missing. Provide post-trade lessons rather than incentives to chase a daily target.
+## Guided learning, without an AI service
+The implemented loop is inspect evidence → write a plan → practice → reflect. Next additions can include more replay scenarios, strategy-specific checklists, and structured quizzes with transparent answers. Keep explanations tied to computed evidence and distinguish learning progress from trading performance. No model API or key is required.
 
 ## Public product
 Add authentication, server-side journals, privacy controls, observability, licensed-data compliance, and review of applicable Indian investment-advice/research requirements. Any broker execution requires a separate explicitly approved product scope.

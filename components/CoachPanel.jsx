@@ -1,38 +1,66 @@
 'use client';
-import { useRef, useState, useEffect } from 'react';
-import { scanMarket, practiceBrief } from '../lib/coach';
-const API=process.env.NEXT_PUBLIC_COACH_API_URL || '';
-export default function CoachPanel({context,onPractice}) {
-  const [topic,setTopic]=useState('setup'),[question,setQuestion]=useState(''),[code,setCode]=useState(''),[messages,setMessages]=useState([]),[busy,setBusy]=useState(false),[error,setError]=useState('');
-  const pending=useRef(null), log=useRef(null), followLatest=useRef(true);
-  useEffect(()=>{if(log.current&&followLatest.current)log.current.scrollTop=log.current.scrollHeight;},[messages,busy]);
-  useEffect(()=>()=>pending.current?.abort(),[]);
-  const scan=scanMarket(context);
-  async function ask(event){
-    event.preventDefault();if(!API||busy||!question.trim()||!code)return;
-    setBusy(true);setError('');const text=question.trim();const controller=new AbortController();pending.current=controller;
-    const timer=setTimeout(()=>controller.abort(),50000);
-    try{
-      const response=await fetch(`${API.replace(/\/$/,'')}/coach`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${code}`},body:JSON.stringify({message:text,context,history:messages.flatMap(m=>[{role:'user',content:m.question},{role:'assistant',content:m.answer}]).slice(-6)}),signal:controller.signal});
-      const data=await response.json();
-      if(!response.ok)throw new Error(data.error||'The coach could not answer. Try again.');
-      if(data.mode!=='ai'||typeof data.answer!=='string'||!Array.isArray(data.evidence))throw new Error('The coach returned an invalid response.');
-      setMessages(previous=>[...previous.slice(-9),{...data,question:text}]);setQuestion('');
-    }catch(e){setError(e.name==='AbortError'?'The request was cancelled or timed out. You can retry.':e instanceof TypeError?'Cannot reach the AI coach. Check the connection and try again.':e.message);}
-    finally{clearTimeout(timer);pending.current=null;setBusy(false);}
+import { useEffect, useState } from 'react';
+import { scanMarket, practiceBrief, riskPlan } from '../lib/coach';
+import { PLAN_CHECKS, createTradePlan } from '../lib/learning';
+
+const money = value => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(value);
+
+export default function CoachPanel({ context, onPractice, onJournal, onEnter, onRiskChange }) {
+  const [topic, setTopic] = useState('setup');
+  const [thesis, setThesis] = useState('');
+  const [checks, setChecks] = useState({});
+  const [error, setError] = useState('');
+  const scan = scanMarket(context);
+  const plan = riskPlan(context);
+  const position = context.account.position;
+  useEffect(() => { setChecks({}); setError(''); }, [context.symbol, context.index, context.riskPercent]);
+
+  function submit(event) {
+    event.preventDefault();
+    try {
+      createTradePlan(context, { thesis, checks });
+      onEnter({ thesis, checks });
+    } catch (cause) { setError(cause.message); }
   }
-  return <section className="agent-workspace" aria-label="Trading coach">
-    <div className="agent-tools"><div className="panel-heading"><h2>Evidence desk</h2><span className="status">Synthetic replay</span></div><p className="muted">The same deterministic tools the AI can use. Updated to candle {context.index}; no future candles included.</p>
-      <div className="agent-scan"><h3>Setup scanner</h3>{scan.map(row=><div className="scan-row" key={row.symbol}><div><strong>{row.symbol}</strong><small>{row.time} IST · {row.price.toFixed(2)}</small></div><div><strong>{row.checksPassed} / 3 checks</strong><small>{row.qualified?'Rules met':'Wait'}</small></div></div>)}<p className="fine">Checks met are not a win probability. All three stocks are fictional examples.</p></div>
-      <h3>Inspect the decision</h3><div className="topic-buttons" aria-label="Practice tool">{[['setup','Explain setup'],['risk','Check my risk'],['journal','Review journal']].map(([key,label])=><button key={key} aria-pressed={topic===key} onClick={()=>setTopic(key)}>{label}</button>)}</div>
-      <div className="practice-answer" aria-live="polite"><span>Calculated practice guide · not AI-generated</span><p>{practiceBrief(context,topic)}</p></div><button className="text-button" onClick={onPractice}>Return to the market lab</button>
+
+  return <section className="agent-workspace" aria-label="Guided trading practice">
+    <div className="agent-tools">
+      <div className="panel-heading"><h2>Evidence desk</h2><span className="status">Rule-based guidance</span></div>
+      <p className="muted">Calculated from the {context.index} candles revealed so far. No model, API key, or future candles.</p>
+      <div className="agent-scan"><h3>Setup scanner</h3>
+        {scan.map(row => <div className="scan-row" key={row.symbol}><div><strong>{row.symbol}</strong><small>{row.time} IST · {row.price.toFixed(2)}</small></div><div><strong>{row.checksPassed} / 3 checks</strong><small>{row.qualified ? 'Rules met' : 'Wait'}</small></div></div>)}
+        <p className="fine">Checks met are not a win probability. Prices are synthetic teaching examples.</p>
+      </div>
+      <h3>Inspect the decision</h3>
+      <div className="topic-buttons" aria-label="Practice tool">{[['setup', 'Explain setup'], ['risk', 'Check my risk'], ['journal', 'Review journal']].map(([key, label]) => <button key={key} aria-pressed={topic === key} onClick={() => setTopic(key)}>{label}</button>)}</div>
+      <div className="practice-answer" aria-live="polite"><span>Calculated practice guide</span><p>{practiceBrief(context, topic)}</p></div>
+      <button className="text-button" onClick={onPractice}>Return to the market lab</button>
     </div>
-    <div className="agent-chat"><div className="panel-heading"><h2>Ask your trading coach</h2><span className="status">{API?'AI service configured':'AI not connected'}</span></div>
-      <p className="agent-intro">Ask why a setup qualifies, how much you could lose, or what a completed trade can teach you.</p>
-      {!API&&<div className="agent-offline"><strong>Practice tools are ready. AI chat is not connected yet.</strong><p>Model-generated answers will be available after the secure AI service is activated. You can explore the evidence desk now.</p></div>}
-      <div className="chat-history" ref={log} onScroll={()=>{const el=log.current;followLatest.current=el.scrollHeight-el.scrollTop-el.clientHeight<60;}} role="log" aria-label="Coach conversation">{!messages.length?<div className="chat-empty"><h3>Good traders ask better questions.</h3><p>“Which rule is still missing?”<br/>“What happens if price gaps below my stop?”<br/>“What can I learn from my last trade?”</p><span>Answers use your current paper session. No live market feed or trade execution.</span></div>:messages.map((m,i)=><article className="chat-exchange" key={i}><p className="user-question">{m.question}</p><div className="ai-answer"><strong>AI coach · {m.asOf?.symbol} · candle {m.asOf?.index}</strong><p>{m.answer}</p><details><summary>Evidence used ({m.evidence.length} tool calls)</summary>{m.evidence.map((e,j)=><div key={j}><h4>{e.tool.replaceAll('_',' ')}</h4><pre>{JSON.stringify(e.result,null,2)}</pre></div>)}</details></div></article>)}</div>
-      <form className="coach-form" onSubmit={ask}><label htmlFor="coach-code">Coach access code <span>Kept in memory only. Never enter an OpenAI API key.</span></label><input id="coach-code" type="password" autoComplete="off" value={code} onChange={e=>setCode(e.target.value)} disabled={!API||busy} maxLength={256}/><label htmlFor="coach-question">Your question</label><textarea id="coach-question" value={question} onChange={e=>setQuestion(e.target.value)} maxLength={2000} rows={3} disabled={!API||busy} placeholder="Help me understand this setup…"/><div className="composer-actions"><span>{question.length} / 2000</span><button className="primary" disabled={!API||busy||!question.trim()||!code}>{busy?'Checking the evidence…':'Ask coach'}</button>{busy&&<button type="button" className="text-button" onClick={()=>pending.current?.abort()}>Cancel</button>}</div><p className="fine">When connected, your question, recent chat, and paper-session snapshot are sent to the AI service and OpenAI. Chat resets when you leave this screen. AI explanations can be wrong; compare them with the evidence.</p></form>
-      {error&&<p className="error" role="alert">{error}</p>}
+
+    <div className="lesson-panel">
+      <div className="panel-heading"><h2>{position ? 'Follow your plan' : 'Plan before you enter'}</h2><span className="status qualified">No key required</span></div>
+      <ol className="learning-steps" aria-label="Learning cycle"><li className={!position ? 'current' : ''}>Plan</li><li className={position ? 'current' : ''}>Practice</li><li>Review</li></ol>
+      {position ? <>
+        <p className="lesson-intro">Your {position.symbol} paper position is open. Compare what happens next with the reasoning you recorded.</p>
+        {position.plan ? <blockquote className="saved-thesis">{position.plan.thesis}</blockquote> : <p className="fine">This trade was entered without a written plan. Try guided entry for your next trade.</p>}
+        <dl><div><dt>Position</dt><dd>{position.quantity} shares</dd></div><div><dt>Stop loss</dt><dd>{money(plan.stop)}</dd></div><div><dt>Planned entry-to-stop loss, with fees</dt><dd>{money(plan.plannedLoss)}</dd></div></dl>
+        <p className="fine">Gap losses can be larger. Advancing the replay checks the stop and target.</p>
+        <button className="primary full" onClick={onPractice}>Manage paper position</button>
+      </> : <form className="learning-form" onSubmit={submit} onChange={() => setError('')} noValidate>
+        <p className="lesson-intro">Turn the setup into a decision you can explain. Your written plan will follow this trade into the journal.</p>
+        <label htmlFor="guided-risk">Risk budget</label>
+        <select id="guided-risk" value={context.riskPercent} onChange={event => onRiskChange(event.target.value)}><option value="0.25">0.25% of available cash</option><option value="0.5">0.5% of available cash</option><option value="1">1% of available cash</option></select>
+        <dl className="plan-numbers"><div><dt>Entry / stop</dt><dd>{money(plan.entry)} / {money(plan.stop)}</dd></div><div><dt>Target</dt><dd>{money(plan.target)}</dd></div><div><dt>Position size</dt><dd>{plan.quantity} shares</dd></div><div><dt>Planned loss including estimated fees</dt><dd>{money(plan.plannedLoss)}</dd></div></dl>
+        <fieldset className="plan-checks"><legend>Before placing the trade</legend>{PLAN_CHECKS.map(check => <label key={check.id}><input type="checkbox" checked={!!checks[check.id]} onChange={event => setChecks(previous => ({ ...previous, [check.id]: event.target.checked }))}/><span>{check.label}</span></label>)}</fieldset>
+        <label htmlFor="trade-thesis">Why is this setup worth practicing?</label>
+        <textarea id="trade-thesis" value={thesis} onChange={event => setThesis(event.target.value)} maxLength={500} rows={4} placeholder="Describe the evidence you see and what would prove your idea wrong." aria-describedby="thesis-help"/>
+        <p className="fine" id="thesis-help">20–500 characters · {thesis.trim().length} written. Your draft resets if you leave this screen before entering.</p>
+        {!plan.canEnter && <p className="entry-status" role="status">{context.index >= 72 ? 'This replay is complete. Review your session or reset practice.' : 'Wait for all three setup rules and enough cash before entering.'}</p>}
+        {error && <p className="error" role="alert">{error}</p>}
+        <button className="primary full" disabled={!plan.canEnter}>Save plan & place paper trade</button>
+        <p className="fine">This places a simulated trade only. Estimated fees apply; gap losses may exceed the plan.</p>
+      </form>}
+      <div className="lesson-next"><h3>Close the learning loop</h3><p>After the exit, compare the outcome with your plan and write one action for your next trade.</p><button className="text-button" onClick={onJournal}>Open your trade reviews</button></div>
     </div>
   </section>;
 }

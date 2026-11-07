@@ -100,7 +100,7 @@
       "kind": "input",
       "refersTo": "risk-select",
       "description": "Choose the cash percentage allocated to planned risk.",
-      "html": "<label class=\"ds-risk-label\" for=\"ds-risk\">Risk budget <span>% of available cash</span></label><select class=\"ds-risk\" id=\"ds-risk\"><option>0.25% · Cautious</option><option selected>0.5% · Balanced</option><option>1% · Higher risk</option></select>",
+      "html": "<label class=\"ds-risk-label\" for=\"ds-risk\">Risk budget <span>% of available cash</span></label><select class=\"ds-risk\" id=\"ds-risk\"><option>0.25% \u00b7 Cautious</option><option selected>0.5% \u00b7 Balanced</option><option>1% \u00b7 Higher risk</option></select>",
       "css": ".ds-risk-label{font-family:'DM Sans Variable','Segoe UI',sans-serif;display:flex;justify-content:space-between;color:var(--ink);font-size:11px;margin-bottom:8px}.ds-risk-label span{font-size:10px;color:var(--muted)}.ds-risk{font-family:'DM Sans Variable','Segoe UI',sans-serif;width:100%;padding:12px;background:var(--paper);border:1px solid #cbd4c7;border-radius:5px;color:var(--ink);font-size:12px}.ds-risk:focus-visible{outline:3px solid var(--green);outline-offset:4px}"
     },
     {
@@ -124,7 +124,7 @@
       "kind": "card",
       "refersTo": "panel",
       "description": "Flat bordered surface for a coherent learning task.",
-      "html": "<section class=\"ds-panel\"><h2 class=\"ds-panel-title\">Market lab</h2><p class=\"ds-panel-copy\">5-minute candles · IST</p></section>",
+      "html": "<section class=\"ds-panel\"><h2 class=\"ds-panel-title\">Market lab</h2><p class=\"ds-panel-copy\">5-minute candles \u00b7 IST</p></section>",
       "css": ".ds-panel{font-family:'DM Sans Variable','Segoe UI',sans-serif;background:var(--white);color:var(--ink);border:1px solid var(--line);border-radius:12px;overflow:hidden;padding:24px}.ds-panel-title{margin:0;font-size:18px;letter-spacing:-.02em;font-weight:600}.ds-panel-copy{margin:8px 0 0;color:var(--muted);font-size:11px}"
     },
     {
@@ -132,24 +132,8 @@
       "kind": "button",
       "refersTo": "stock-selected",
       "description": "Choose a synthetic stock replay; selected state is also programmatic.",
-      "html": "<button class=\"ds-stock\" aria-pressed=\"true\"><strong>RELIANCE</strong><span>₹1,250.00</span></button>",
+      "html": "<button class=\"ds-stock\" aria-pressed=\"true\"><strong>RELIANCE</strong><span>\u20b91,250.00</span></button>",
       "css": ".ds-stock{font-family:'DM Sans Variable','Segoe UI',sans-serif;display:flex;flex-direction:column;text-align:left;color:var(--ink);border:1px solid #99af8c;background:#f0f5e9;border-radius:6px;padding:10px 12px;cursor:pointer;transition:background .16s ease-out,color .16s ease-out}.ds-stock strong{font-size:10px;font-weight:600}.ds-stock span{font-size:12px;font-variant-numeric:tabular-nums;margin-top:3px}.ds-stock:hover:not(:disabled){background:#e7efdf}.ds-stock:focus-visible{outline:3px solid var(--green);outline-offset:4px}.ds-stock:disabled{opacity:.46;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-stock{transition:none}}"
-    },
-    {
-      "name": "Coach Composer Fields",
-      "kind": "input",
-      "refersTo": "coach-field",
-      "description": "Access code and question fields; disabled until the AI service is configured and while a reply is pending.",
-      "html": "<div class=\"ds-coach-fields\"><label for=\"ds-coach-code\">Coach access code <span>Kept in memory only. Never enter an OpenAI API key.</span></label><input id=\"ds-coach-code\" type=\"password\" autocomplete=\"off\" maxlength=\"256\" disabled><label for=\"ds-coach-question\">Your question</label><textarea id=\"ds-coach-question\" rows=\"3\" maxlength=\"2000\" placeholder=\"Help me understand this setup…\" disabled></textarea></div>",
-      "css": ".ds-coach-fields{font-family:'DM Sans Variable','Segoe UI',sans-serif;color:var(--ink);font-size:14px;line-height:1.5}.ds-coach-fields label{display:block;font-size:12px;margin:14px 0 7px}.ds-coach-fields label span{display:block;color:var(--muted);font-size:10px}.ds-coach-fields input,.ds-coach-fields textarea{width:100%;padding:12px;border:1px solid #cbd4c7;background:var(--paper);border-radius:6px;color:var(--ink);font:inherit;caret-color:var(--green)}.ds-coach-fields textarea{resize:vertical;min-height:90px}.ds-coach-fields input:focus-visible,.ds-coach-fields textarea:focus-visible{outline:3px solid var(--green);outline-offset:3px}.ds-coach-fields input:disabled,.ds-coach-fields textarea:disabled{opacity:.6;cursor:not-allowed}"
-    },
-    {
-      "name": "Coach Disconnected Notice",
-      "kind": "custom",
-      "refersTo": "coach-offline",
-      "description": "Distinguishes available deterministic practice tools from disconnected AI chat.",
-      "html": "<div class=\"ds-coach-offline\"><strong>Practice tools are ready. AI chat is not connected yet.</strong><p>Model-generated answers will be available after the secure AI service is activated. You can explore the evidence desk now.</p></div>",
-      "css": ".ds-coach-offline{font-family:'DM Sans Variable','Segoe UI',sans-serif;color:var(--ink);background:var(--mint);padding:16px;font-size:12px;border-radius:6px}.ds-coach-offline p{margin:7px 0 0;color:var(--muted);line-height:1.7}"
     },
     {
       "name": "Coach Topic Button",
@@ -157,7 +141,15 @@
       "refersTo": "coach-topic-selected",
       "description": "Select a deterministic practice explanation with a visible and programmatic pressed state.",
       "html": "<button class=\"ds-coach-topic\" aria-pressed=\"true\">Explain setup</button>",
-      "css": ".ds-coach-topic{font-family:'DM Sans Variable','Segoe UI',sans-serif;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper);font-size:11px;color:var(--ink);cursor:pointer;transition:background .16s ease-out,color .16s ease-out}.ds-coach-topic[aria-pressed=true]{background:var(--mint);border-color:var(--green)}.ds-coach-topic:focus-visible{outline:3px solid var(--green);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-coach-topic{transition:none}}"
+      "css": ".ds-coach-topic{font-family:'DM Sans Variable','Segoe UI',sans-serif;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--paper);font-size:12px;color:var(--ink);cursor:pointer;transition:background .16s ease-out,color .16s ease-out}.ds-coach-topic[aria-pressed=true]{background:var(--mint);border-color:var(--green)}.ds-coach-topic:focus-visible{outline:3px solid var(--green);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-coach-topic{transition:none}}"
+    },
+    {
+      "name": "Learning Reflection",
+      "kind": "input",
+      "refersTo": "coach-field",
+      "description": "Learner-authored reasoning or reflection, saved only in session memory.",
+      "html": "<label class=\"ds-learning-label\" for=\"ds-lesson\">What did you learn?</label><textarea class=\"ds-learning-text\" id=\"ds-lesson\" rows=\"3\" maxlength=\"500\"></textarea>",
+      "css": ".ds-learning-label{display:block;font-family:'DM Sans Variable',sans-serif;font-size:13px;color:var(--ink);margin:20px 0 8px}.ds-learning-text{box-sizing:border-box;width:100%;min-height:105px;padding:12px;border:1px solid #cbd4c7;background:var(--paper);border-radius:6px;color:var(--ink);font:14px/1.7 'DM Sans Variable',sans-serif;resize:vertical;caret-color:var(--green)}.ds-learning-text:focus-visible{outline:3px solid var(--green);outline-offset:3px}"
     }
   ],
   "narrative": {

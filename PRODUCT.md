@@ -18,7 +18,7 @@ Help learners practice identifying opportunities, controlling risk, and reviewin
 The first version uses paper trading. Real-money execution is outside the initial scope. A learner should inspect the evidence for a setup, decide a risk budget, simulate an order, and review the result.
 
 ## Capabilities and Constraints
-Initial implementation: clearly labeled synthetic market replay, explainable rule-based setups, position sizing, simulated positions, and a session trade journal. Implemented next layer: deterministic evidence desk and an OpenAI Responses agent with read-only tools, awaiting backend hosting and credentials. Proposed future capability: licensed live market data. No measured signal accuracy is available yet. Demo signals must not be described as live opportunities or calibrated probabilities.
+Initial implementation: clearly labeled synthetic market replay, explainable rule-based setups, position sizing, simulated positions, and a session trade journal. Implemented next layer: a deterministic evidence desk, guided entry checklist, written trade plans, and post-trade reflections. Proposed future capability: licensed live market data. No measured signal accuracy is available yet. Demo signals must not be described as live opportunities or calibrated probabilities.
 
 ## Evidence on Hand
 The initial repository contained only a README. There are no market datasets, brokerage connections, model evaluations, or performance benchmarks.
@@ -31,10 +31,10 @@ The initial repository contained only a README. There are no market datasets, br
 - Evaluate returns after costs and alongside drawdown; never promise daily income.
 
 ## Open Decisions
-Data vendor, deployment target, retention and account requirements.
+Future datasets, scenarios, and any explicitly requested persistence requirements.
 
 ## Hosting and persistence
 The user requests GitHub hosting and no laptop local storage. Deploy the static export to GitHub Pages. Practice state is held only in memory and resets on reload. Durable private cloud storage is not part of GitHub Pages.
 
-## AI provider
-The user delegated provider choice. OpenAI is selected, with a separate server-side service and configurable model. The user asked to continue building. Chat must be disabled when the gateway is unconfigured; never present calculated practice text as model output.
+## Key-free coaching
+The user explicitly chose to continue without an AI agent or API key. All guidance is deterministic and runs in the static app. The unused AI backend, credentials, and external hosting configuration have been removed. Do not reintroduce provider requirements or an inactive chat UI without a new request.
