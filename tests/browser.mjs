@@ -4,6 +4,16 @@ import { mkdir } from 'node:fs/promises';
 await mkdir('.impeccable/review',{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});
 const appURL=process.env.APP_URL||'http://127.0.0.1:3000';
+
+async function completeFriction(page) {
+  const input = page.locator('#invalidation-stop');
+  await input.waitFor();
+  const stop = await input.getAttribute('placeholder');
+  assert.ok(stop, 'Friction stop placeholder required');
+  await input.fill(stop);
+  await page.getByText('Ready', { exact: true }).first().waitFor({ timeout: 20000 });
+}
+
 try {
   const page=await browser.newPage({viewport:{width:1440,height:1100}});
   const errors=[],externalRequests=[];
@@ -11,6 +21,7 @@ try {
   page.on('request',req=>{if(new URL(req.url()).origin!==new URL(appURL).origin)externalRequests.push(req.url());});
   await page.goto(appURL);
   await page.getByRole('button',{name:'Place paper trade'}).waitFor();
+  await page.getByRole('heading',{name:'Compare your choice'}).waitFor();
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:'.impeccable/review/desktop.png',fullPage:true});
   await page.getByRole('button',{name:'Coach',exact:true}).click();
@@ -19,6 +30,7 @@ try {
   assert.equal(await page.getByRole('button',{name:'Ask coach',exact:true}).count(),0);
   await page.getByRole('button',{name:'Check my risk'}).click();
   await page.getByText(/calculator allows 39 shares/).waitFor();
+  await completeFriction(page);
   await page.getByRole('button',{name:'Save plan & place paper trade'}).click();
   await page.getByRole('alert').filter({hasText:'Complete all three'}).waitFor();
   for(const label of ['I checked the trend','I know the stop price','I accept the planned loss'])await page.getByLabel(new RegExp(label)).check();
@@ -30,6 +42,7 @@ try {
   assert.equal(await page.getByLabel('Why is this setup worth practicing?').inputValue(),thesis);
   await page.getByLabel('Risk budget',{exact:true}).selectOption('0.5');
   for(const label of ['I checked the trend','I know the stop price','I accept the planned loss'])await page.getByLabel(new RegExp(label)).check();
+  await completeFriction(page);
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.screenshot({path:'.impeccable/review/coach-desktop.png',fullPage:true});
   await page.setViewportSize({width:390,height:844});
@@ -45,6 +58,8 @@ try {
   for(let i=0;i<44&&await page.getByRole('button',{name:'Close paper position'}).count();i++)await page.getByRole('button',{name:'Next candle'}).click();
   assert.equal(await page.getByRole('button',{name:'Close paper position'}).count(),0);
   await page.getByRole('button',{name:/^Journal/}).click();
+  await page.getByRole('heading',{name:'Process stats'}).waitFor();
+  await page.getByRole('heading',{name:'Decision replay theater'}).waitFor();
   await page.locator('tbody tr').first().waitFor();
   await page.getByText(thesis,{exact:true}).waitFor();
   await page.getByRole('button',{name:'Save reflection'}).click();
@@ -69,6 +84,7 @@ try {
   await page.getByRole('button',{name:'Reset practice'}).click();
   await page.getByRole('button',{name:'Confirm reset & clear journal'}).click();
   await page.getByRole('button',{name:'Journal 0'}).waitFor();
+  await completeFriction(page);
   await page.getByRole('button',{name:'Place paper trade'}).click();
   await page.getByRole('button',{name:'Close paper position'}).click();
   await page.getByRole('button',{name:/^Journal/}).click();
@@ -80,5 +96,5 @@ try {
   await page.getByRole('link',{name:'AIAgent home'}).click();
   await page.getByRole('heading',{name:'Market lab'}).waitFor();
   assert.deepEqual(externalRequests,[],'App must not call external services');assert.deepEqual(errors,[]);
-  console.log('PASS: guided plan, risk re-acknowledgement, entry, automatic exit, saved reflection, navigation, mobile layouts, quick trade, reset, no storage or external requests.');
+  console.log('PASS: friction, compare choice, guided plan, replay/stats journal, mobile layouts, quick trade, reset, no storage or external requests.');
 }finally{await browser.close();}

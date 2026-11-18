@@ -25,7 +25,7 @@ test('plans survive exit and trade ids remain distinct within a session',()=>{
   const closed=closeTrade(opened,setup.entry,'Manual',c.index-1);
   assert.deepEqual(closed.trades[0].plan,plan);assert.equal(closed.trades[0].id,1);
   const next=openTrade(closed,c.symbol,setup,c.riskPercent,c.index-1);assert.equal(next.position.id,2);
-  assert.deepEqual(learningProgress(closed.trades),{completed:1,planned:1,reviewed:0});
+  assert.deepEqual(learningProgress(closed.trades),{completed:1,planned:1,reviewed:0,quizzed:0});
 });
 test('reflections validate substance and progress measures process, not profit',()=>{
   assert.throws(()=>validateReflection({followedPlan:'yes',lesson:'',nextStep:'next'}),/10 and 500/);
@@ -33,6 +33,6 @@ test('reflections validate substance and progress measures process, not profit',
   const reflection=validateReflection({followedPlan:'no',lesson:'  I exited before the planned stop. ',nextStep:'Write a specific invalidation before entering.'});
   assert.equal(reflection.lesson,'I exited before the planned stop.');
   const trades=[{pnl:-100,plan:{},reflection},{pnl:500}];
-  assert.deepEqual(learningProgress(trades),{completed:2,planned:1,reviewed:1});
+  assert.deepEqual(learningProgress(trades),{completed:2,planned:1,reviewed:1,quizzed:0});
   assert.match(reviewPrompt(trades[0]),/deviation/);assert.match(reviewPrompt(trades[1]),/No written plan/);
 });
